@@ -5,10 +5,12 @@ import { parseCSV, handleSearch, handleSort } from './data.js';
 import { debounce } from './utils.js';
 import {
     showViewer, resetApp, loadSampleData, changePage, switchView, closeModal,
-    showSettings, hideSettings, playPreview, renderData, toggleInfiniteScroll
+    showSettings, hideSettings, playPreview, renderData, toggleInfiniteScroll,
+    showShareModal, closeShareModal
 } from './ui.js';
+import { shareData, getSharedData } from './api.js';
 
-export function init() {
+export async function init() {
     setupEventListeners();
     setupParticles();
     loadTheme();
@@ -20,6 +22,28 @@ export function init() {
         renderData();
         if (window.updateURL) window.updateURL();
     });
+
+    // Check for shared data ID
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('id')) {
+        const id = params.get('id');
+        try {
+            // Show loading state if needed, or just let it load
+            const result = await getSharedData(id);
+            if (result && result.data && Array.isArray(result.data)) {
+                state.data = result.data;
+                state.filteredData = [...state.data];
+                // Extract headers from first row keys
+                if (state.data.length > 0) {
+                    state.headers = Object.keys(state.data[0]);
+                }
+                showViewer();
+            }
+        } catch (e) {
+            console.error('Failed to load shared data:', e);
+            alert('Failed to load shared playlist. It may have expired or does not exist.');
+        }
+    }
 }
 
 function setupEventListeners() {
@@ -115,6 +139,57 @@ function setupEventListeners() {
     if (elements.infiniteScrollToggle) {
         elements.infiniteScrollToggle.addEventListener('change', (e) => {
             toggleInfiniteScroll(e.target.checked);
+        });
+    }
+
+    // Share Functionality
+    if (elements.shareBtn) {
+        elements.shareBtn.addEventListener('click', async () => {
+            if (state.data.length === 0) {
+                alert('No data to share!');
+                return;
+            }
+
+            // Update button state
+            const originalText = elements.shareBtn.innerHTML;
+            elements.shareBtn.innerHTML = '<span>Saving...</span>';
+            elements.shareBtn.disabled = true;
+
+            try {
+                const result = await shareData(state.data);
+                if (result && result.id) {
+                    const url = `${window.location.origin}${window.location.pathname}?id=${result.id}`;
+                    showShareModal(url);
+                }
+            } catch (e) {
+                console.error('Share failed:', e);
+                alert('Failed to share playlist');
+            } finally {
+                elements.shareBtn.innerHTML = originalText;
+                elements.shareBtn.disabled = false;
+            }
+        });
+    }
+
+    if (elements.shareModalClose) {
+        elements.shareModalClose.addEventListener('click', closeShareModal);
+    }
+    if (elements.shareModalBackdrop) {
+        elements.shareModalBackdrop.addEventListener('click', closeShareModal);
+    }
+
+    if (elements.copyShareBtn) {
+        elements.copyShareBtn.addEventListener('click', () => {
+            const input = elements.shareUrlInput;
+            input.select();
+            document.execCommand('copy'); // Fallback or use API
+
+            // Visual feedback
+            const originalHTML = elements.copyShareBtn.innerHTML;
+            elements.copyShareBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            setTimeout(() => {
+                elements.copyShareBtn.innerHTML = originalHTML;
+            }, 2000);
         });
     }
 

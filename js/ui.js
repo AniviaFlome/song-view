@@ -661,3 +661,13 @@ export function toggleInfiniteScroll(enabled) {
     state.currentPage = 1;
     renderData();
 }
+
+export function showShareModal(url) {
+    elements.shareUrlInput.value = url;
+    elements.shareModal.classList.remove('hidden');
+    elements.shareUrlInput.select();
+}
+
+export function closeShareModal() {
+    elements.shareModal.classList.add('hidden');
+}

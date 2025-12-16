@@ -98,9 +98,15 @@
 
 /* ===== Main Content ===== */
 .main {
+    width: 100%;
     max-width: 1400px;
     margin: 0 auto;
     padding: 32px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* ===== Upload Section ===== */
@@ -108,9 +114,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 140px);
-    max-height: calc(100vh - 140px);
-    overflow: hidden;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    /* Allow flex shrinking */
 }
 
 .upload-container {

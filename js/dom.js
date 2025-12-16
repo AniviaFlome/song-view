@@ -29,7 +29,13 @@ export const elements = {
     settingsBackBtn: document.getElementById('settingsBackBtn'),
     themeGrid: document.getElementById('themeGrid'),
     sortDropdown: document.getElementById('sortDropdown'),
-    infiniteScrollToggle: document.getElementById('infiniteScrollToggle')
+    infiniteScrollToggle: document.getElementById('infiniteScrollToggle'),
+    shareBtn: document.getElementById('shareBtn'),
+    shareModal: document.getElementById('shareModal'),
+    shareModalBackdrop: document.getElementById('shareModalBackdrop'),
+    shareModalClose: document.getElementById('shareModalClose'),
+    shareUrlInput: document.getElementById('shareUrlInput'),
+    copyShareBtn: document.getElementById('copyShareBtn')
 };
 
 export function setupParticles() {
