@@ -94,14 +94,13 @@ function setupEventDelegation() {
 
     // Grid Delegation
     elements.gridView.addEventListener('click', (e) => {
-        const playButton = e.target.closest('.grid-item-play');
+        const artContainer = e.target.closest('.track-art-container');
         const item = e.target.closest('.grid-item');
 
-        if (playButton && item) {
+        if (artContainer && item) {
             e.stopPropagation();
-            const previewUrl = item.dataset.preview;
-            const imageContainer = item.querySelector('.grid-item-image');
-            playPreview(previewUrl, imageContainer);
+            const previewUrl = artContainer.dataset.preview;
+            playPreview(previewUrl, artContainer);
             return;
         }
 
@@ -288,14 +287,14 @@ export function renderGrid(append = false) {
         const previewUrl = previewKey ? row[previewKey] : null;
 
         return `
-            <div class="grid-item" data-index="${start + index}" data-preview="${previewUrl || ''}">
-                <div class="grid-item-image">
+            <div class="grid-item" data-index="${start + index}">
+                <div class="track-art-container grid-art" data-preview="${previewUrl || ''}">
                     ${imageSrc
-                ? `<img src="${imageSrc}" alt="${escapeHtml(trackName)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                   <div class="grid-item-placeholder" style="display:none; background: var(--gradient-2)">${placeholderSvg}</div>`
-                : `<div class="grid-item-placeholder">${placeholderSvg}</div>`
+                ? `<img src="${imageSrc}" alt="${escapeHtml(trackName)}" class="track-art" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                   <div class="track-art-placeholder" style="display:none; background: var(--gradient-2)">${placeholderSvg}</div>`
+                : `<div class="track-art-placeholder">${placeholderSvg}</div>`
             }
-                    <div class="grid-item-play">
+                    <div class="play-overlay">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <polygon points="5 3 19 12 5 21 5 3"/>
                         </svg>

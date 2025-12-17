@@ -398,30 +398,34 @@
 }
 
 .track-art-container.playing .play-overlay {
-    opacity: 1;
-}
-
-/* Hide play button when audio is playing in grid view */
-.grid-item-image.playing .grid-item-play {
     opacity: 0 !important;
     pointer-events: none;
-    transition: none;
 }
 
-/* Bigger progress ring for grid view */
-.grid-item-image .audio-progress-overlay {
+/* Bigger version for grid view */
+.track-art-container.grid-art {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
     border-radius: 0;
 }
 
-.grid-item-image .progress-ring {
+.track-art-container.grid-art .play-overlay svg {
+    width: 48px;
+    height: 48px;
+}
+
+.track-art-container.grid-art .progress-ring {
     width: 64px;
     height: 64px;
 }
 
-.grid-item-image .pause-icon {
+.track-art-container.grid-art .pause-icon {
     width: 32px;
     height: 32px;
 }
+
+
 
 /* Action Button */
 .action-btn {

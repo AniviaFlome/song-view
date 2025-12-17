@@ -429,31 +429,7 @@
     opacity: 0.7;
 }
 
-.grid-item-play {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition: opacity var(--transition-fast);
-}
 
-.grid-item:hover .grid-item-play {
-    opacity: 1;
-}
-
-/* Don't show play button on hover when already playing */
-.grid-item:hover .grid-item-image.playing .grid-item-play {
-    opacity: 0;
-}
-
-.grid-item-play svg {
-    width: 48px;
-    height: 48px;
-    color: white;
-}
 
 .grid-item-info {
     padding: 16px;
